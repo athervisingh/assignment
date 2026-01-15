@@ -1,6 +1,5 @@
-// apiNode.js
-import { useState } from 'react';
-import { BaseNode } from './baseNode';
+import React, { useState } from 'react';
+import { BaseNode } from './base/BaseNode';
 
 export const APINode = ({ id, data }) => {
   const [method, setMethod] = useState(data?.method || 'GET');
@@ -17,49 +16,31 @@ export const APINode = ({ id, data }) => {
         { value: 'POST', label: 'POST' },
         { value: 'PUT', label: 'PUT' },
         { value: 'DELETE', label: 'DELETE' },
-        { value: 'PATCH', label: 'PATCH' }
-      ]
+        { value: 'PATCH', label: 'PATCH' },
+      ],
     },
     {
       label: 'Endpoint',
       type: 'text',
       value: endpoint,
       onChange: (e) => setEndpoint(e.target.value),
-      placeholder: 'https://api.example.com/data'
-    }
+      placeholder: 'https://api.example.com/data',
+    },
   ];
-
-  const handles = {
-    inputs: [
-      { id: 'body', top: '40%' },
-      { id: 'headers', top: '70%' }
-    ],
-    outputs: [
-      { id: 'response' }
-    ]
-  };
 
   return (
     <BaseNode
-      showId={true}
       id={id}
       title="API Call"
       fields={fields}
-      handles={handles}
-      style={{
-        background: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
-        height: 140
+      handles={{
+        inputs: [{ id: 'body', top: '40%' }, { id: 'headers', top: '70%' }],
+        outputs: [{ id: 'response' }],
       }}
+      showId={true}
+      style={{ background: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)', height: 140 }}
     >
-      <div style={{
-        textAlign: 'center',
-        fontSize: '18px',
-        marginTop: '6px'
-      }}>
-        🌐
-      </div>
+      <div style={{ textAlign: 'center', fontSize: '18px', marginTop: '6px' }}>🌐</div>
     </BaseNode>
   );
 };
-
-export default APINode;

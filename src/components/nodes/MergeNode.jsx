@@ -1,6 +1,5 @@
-// mergeNode.js
-import { useState } from 'react';
-import { BaseNode } from './baseNode';
+import React, { useState } from 'react';
+import { BaseNode } from './base/BaseNode';
 
 export const MergeNode = ({ id, data }) => {
   const [mergeType, setMergeType] = useState(data?.mergeType || 'concat');
@@ -15,50 +14,31 @@ export const MergeNode = ({ id, data }) => {
       options: [
         { value: 'concat', label: 'Concatenate' },
         { value: 'array', label: 'To Array' },
-        { value: 'object', label: 'To Object' }
-      ]
+        { value: 'object', label: 'To Object' },
+      ],
     },
     {
       label: 'Separator',
       type: 'text',
       value: separator,
       onChange: (e) => setSeparator(e.target.value),
-      placeholder: ', '
-    }
+      placeholder: ', ',
+    },
   ];
-
-  const handles = {
-    inputs: [
-      { id: 'input1', top: '25%' },
-      { id: 'input2', top: '50%' },
-      { id: 'input3', top: '75%' }
-    ],
-    outputs: [
-      { id: 'merged' }
-    ]
-  };
 
   return (
     <BaseNode
-      showId={true}
       id={id}
       title="Merge"
       fields={fields}
-      handles={handles}
-      style={{
-        background: 'linear-gradient(135deg, #fdcbf1 0%, #e6dee9 100%)',
-        height: 140
+      handles={{
+        inputs: [{ id: 'input1', top: '25%' }, { id: 'input2', top: '50%' }, { id: 'input3', top: '75%' }],
+        outputs: [{ id: 'merged' }],
       }}
+      showId={true}
+      style={{ background: 'linear-gradient(135deg, #fdcbf1 0%, #e6dee9 100%)', height: 140 }}
     >
-      <div style={{
-        textAlign: 'center',
-        fontSize: '20px',
-        marginTop: '6px'
-      }}>
-        🔗
-      </div>
+      <div style={{ textAlign: 'center', fontSize: '20px', marginTop: '6px' }}>🔗</div>
     </BaseNode>
   );
 };
-
-export default MergeNode;

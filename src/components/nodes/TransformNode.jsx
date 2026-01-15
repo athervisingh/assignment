@@ -1,6 +1,5 @@
-// transformNode.js
-import { useState } from 'react';
-import { BaseNode } from './baseNode';
+import React, { useState } from 'react';
+import { BaseNode } from './base/BaseNode';
 
 export const TransformNode = ({ id, data }) => {
   const [transformType, setTransformType] = useState(data?.transformType || 'uppercase');
@@ -17,40 +16,21 @@ export const TransformNode = ({ id, data }) => {
         { value: 'capitalize', label: 'Capitalize' },
         { value: 'reverse', label: 'Reverse' },
         { value: 'trim', label: 'Trim Spaces' },
-        { value: 'length', label: 'Get Length' }
-      ]
-    }
+        { value: 'length', label: 'Get Length' },
+      ],
+    },
   ];
-
-  const handles = {
-    inputs: [
-      { id: 'input' }
-    ],
-    outputs: [
-      { id: 'output' }
-    ]
-  };
 
   return (
     <BaseNode
-      showId={true}
       id={id}
       title="Transform"
       fields={fields}
-      handles={handles}
-      style={{
-        background: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)'
-      }}
+      handles={{ inputs: [{ id: 'input' }], outputs: [{ id: 'output' }] }}
+      showId={true}
+      style={{ background: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)' }}
     >
-      <div style={{
-        textAlign: 'center',
-        fontSize: '20px',
-        marginTop: '8px'
-      }}>
-        🔄
-      </div>
+      <div style={{ textAlign: 'center', fontSize: '20px', marginTop: '8px' }}>🔄</div>
     </BaseNode>
   );
 };
-
-export default TransformNode;
