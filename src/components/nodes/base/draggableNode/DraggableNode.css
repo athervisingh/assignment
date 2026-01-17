@@ -1,0 +1,54 @@
+/* Draggable Node Base Styles */
+.draggable-node {
+  cursor: grab !important;
+  width: 61px !important;
+  height: 60px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-direction: column !important;
+  padding: 8px !important;
+  gap: 4px !important;
+  border-radius: 8px !important;
+  border: 1px solid #00000018 !important;
+  transition: all 0.2s ease !important;
+  user-select: none !important;
+}
+
+.draggable-node:active,
+.draggable-node[draggable="true"]:active {
+  cursor: grabbing !important;
+  transform: scale(1.05) !important;
+}
+
+.draggable-node img {
+  width: 15px !important;
+  height: 15px !important;
+  object-fit: contain !important;
+  flex-shrink: 0 !important;
+}
+
+.draggable-node span {
+  font-size: 8px !important;
+  text-align: center !important;
+  line-height: 1.2 !important;
+  font-weight: 500 !important;
+  word-break: break-word !important;
+}
+
+/* Hover Effect */
+.draggable-node:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.075) !important;
+  border: 1px solid #5558f1 !important;
+  color: #5558f1 !important;
+  background-color: #5558f10a !important;
+}
+
+/* Drag Animation */
+.draggable-node.dragging {
+  opacity: 0.8 !important;
+  transform: rotate(5deg) scale(1.1) !important;
+  z-index: 1000 !important;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4) !important;
+}
