@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { BaseNode } from './base/BaseNode';
+import { NODE_CONFIG } from '../../config/nodeConfig';
 
 export const APINode = ({ id, data }) => {
   const [method, setMethod] = useState(data?.method || 'GET');
   const [endpoint, setEndpoint] = useState(data?.endpoint || 'https://api.example.com');
+  const config = data?.config || NODE_CONFIG.api; 
 
   const fields = [
     {
@@ -31,16 +33,14 @@ export const APINode = ({ id, data }) => {
   return (
     <BaseNode
       id={id}
-      title="API Call"
+      title={config.label}
       fields={fields}
-      handles={{
-        inputs: [{ id: 'body', top: '40%' }, { id: 'headers', top: '70%' }],
-        outputs: [{ id: 'response' }],
-      }}
+      handles={config.handles}      // ✅ From config
+      style={config.style}          // ✅ From config
+      description={config.description} // ✅ New prop
       showId={true}
-      style={{ background: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)', height: 140 }}
+      icon={config.icon}    
     >
-      <div style={{ textAlign: 'center', fontSize: '18px', marginTop: '6px' }}>🌐</div>
     </BaseNode>
   );
 };

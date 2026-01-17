@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { BaseNode } from './base/BaseNode';
-
+import { NODE_CONFIG } from '../../config/nodeConfig';
 export const MergeNode = ({ id, data }) => {
   const [mergeType, setMergeType] = useState(data?.mergeType || 'concat');
   const [separator, setSeparator] = useState(data?.separator || ', ');
+    const config = data?.config || NODE_CONFIG.merge; 
 
   const fields = [
     {
@@ -29,16 +30,14 @@ export const MergeNode = ({ id, data }) => {
   return (
     <BaseNode
       id={id}
-      title="Merge"
+       title={config.label}
       fields={fields}
-      handles={{
-        inputs: [{ id: 'input1', top: '25%' }, { id: 'input2', top: '50%' }, { id: 'input3', top: '75%' }],
-        outputs: [{ id: 'merged' }],
-      }}
+      handles={config.handles}      // ✅ From config
+      style={config.style}          // ✅ From config
+      description={config.description} // ✅ New prop
       showId={true}
-      style={{ background: 'linear-gradient(135deg, #fdcbf1 0%, #e6dee9 100%)', height: 140 }}
+        icon={config.icon}
     >
-      <div style={{ textAlign: 'center', fontSize: '20px', marginTop: '6px' }}>🔗</div>
     </BaseNode>
   );
 };

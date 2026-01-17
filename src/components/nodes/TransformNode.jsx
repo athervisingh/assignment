@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { BaseNode } from './base/BaseNode';
-
+import { NODE_CONFIG } from '../../config/nodeConfig';
 export const TransformNode = ({ id, data }) => {
   const [transformType, setTransformType] = useState(data?.transformType || 'uppercase');
-
+  const config = data?.config || NODE_CONFIG.transform; 
   const fields = [
     {
       label: 'Transform',
@@ -24,13 +24,14 @@ export const TransformNode = ({ id, data }) => {
   return (
     <BaseNode
       id={id}
-      title="Transform"
+       title={config.label}
       fields={fields}
-      handles={{ inputs: [{ id: 'input' }], outputs: [{ id: 'output' }] }}
+      handles={config.handles}      // ✅ From config
+      style={config.style}          // ✅ From config
+      description={config.description} // ✅ New prop
       showId={true}
-      style={{ background: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)' }}
+        icon={config.icon}
     >
-      <div style={{ textAlign: 'center', fontSize: '20px', marginTop: '8px' }}>🔄</div>
     </BaseNode>
   );
 };

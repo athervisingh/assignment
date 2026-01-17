@@ -13,3 +13,10 @@ code {
 * {
   box-sizing: border-box;
 }
+.app-wrapper{
+  margin: 5px;
+  border-radius: 5px;
+  border: 1px solid #0000003a;
+  overflow: hidden;
+}
+

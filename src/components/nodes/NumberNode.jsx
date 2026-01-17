@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { BaseNode } from './base/BaseNode';
-
+import { NODE_CONFIG } from '../../config/nodeConfig';
 export const NumberNode = ({ id, data }) => {
   const [value, setValue] = useState(data?.value || 0);
   const [min, setMin] = useState(data?.min || 0);
   const [max, setMax] = useState(data?.max || 100);
+  const config = data?.config || NODE_CONFIG.number; 
 
   const fields = [
     { label: 'Value', type: 'number', value, onChange: (e) => setValue(e.target.value), min, max, step: 1 },
@@ -15,11 +16,13 @@ export const NumberNode = ({ id, data }) => {
   return (
     <BaseNode
       id={id}
-      title="Number"
+       title={config.label}
       fields={fields}
-      handles={{ inputs: [], outputs: [{ id: 'value' }] }}
+      handles={config.handles}      // ✅ From config
+      style={config.style}          // ✅ From config
+      description={config.description} // ✅ New prop
       showId={true}
-      style={{ background: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)', height: 160 }}
+        icon={config.icon}
     />
   );
 };

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { BaseNode } from './base/BaseNode';
+import { NODE_CONFIG } from '../../config/nodeConfig';
 
 export const CalculatorNode = ({ id, data }) => {
   const [operation, setOperation] = useState(data?.operation || 'add');
-
+  const config = data?.config || NODE_CONFIG.calculator; 
   const symbols = { add: '+', subtract: '-', multiply: '×', divide: '÷', power: '^', modulo: '%' };
 
   const fields = [
@@ -26,14 +27,13 @@ export const CalculatorNode = ({ id, data }) => {
   return (
     <BaseNode
       id={id}
-      title="Calculator"
+       title={config.label}
+        icon={config.icon}    
       fields={fields}
-      handles={{
-        inputs: [{ id: 'a', top: '33%' }, { id: 'b', top: '66%' }],
-        outputs: [{ id: 'result' }],
-      }}
+      handles={config.handles}      // ✅ From config
+      style={config.style}          // ✅ From config
+      description={config.description} // ✅ New prop
       showId={true}
-      style={{ background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' }}
     >
       <div style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', marginTop: '8px', color: '#FFF' }}>
         {symbols[operation]}

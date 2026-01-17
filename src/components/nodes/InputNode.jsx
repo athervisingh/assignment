@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { BaseNode } from './base/BaseNode';
-
+import { NODE_CONFIG } from '../../config/nodeConfig';
 export const InputNode = ({ id, data }) => {
   const [inputType, setInputType] = useState(data.inputType || 'Text');
-
+  const config = data?.config || NODE_CONFIG.customInput; 
   const fields = [
     {
       label: 'Type',
@@ -20,11 +20,13 @@ export const InputNode = ({ id, data }) => {
   return (
     <BaseNode
       id={id}
-      title="Input"
+       title={config.label}
       fields={fields}
-      handles={{ inputs: [], outputs: [{ id: 'value' }] }}
+      handles={config.handles}      // ✅ From config
+      style={config.style}          // ✅ From config
+      description={config.description} // ✅ New prop
       showId={true}
-      style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}
+        icon={config.icon}
     />
   );
 };

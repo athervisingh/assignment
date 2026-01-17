@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useStore } from '../../store/pipelineStore';
-import { PipelineAPI } from '../../services/pipelineAPI';
-import { NodeHelpers } from '../../utils/nodeHelpers';
-import { Button } from '../common/Button';
+import { useState } from 'react';
+import { useStore } from '../../../../../store/pipelineStore';
+import { PipelineAPI } from '../../../../../services/pipelineAPI';
+import { NodeHelpers } from '../../../../../utils/nodeHelpers';
+import './PipelineSubmit.css';
 
 export const PipelineSubmit = () => {
   const nodes = useStore((state) => state.nodes);
@@ -49,21 +49,8 @@ ${dagExplanation}
         throw new Error(result.error || 'Unknown error occurred');
       }
     } catch (error) {
-      console.error('Pipeline submission error:', error);
-
       let errorMessage = '❌ Error: Failed to submit pipeline\n\n';
-
-      if (error.message.includes('fetch')) {
-        errorMessage += '🔌 Backend Connection Error\n\n';
-        errorMessage += 'Make sure the backend server is running:\n';
-        errorMessage += '1. Open terminal\n';
-        errorMessage += '2. Navigate to backend folder\n';
-        errorMessage += '3. Run: uvicorn main:app --reload\n';
-        errorMessage += '4. Backend should be at: http://127.0.0.1:8000\n';
-      } else {
-        errorMessage += `Error details: ${error.message}`;
-      }
-
+      errorMessage += `Error details: ${error.message}`;
       alert(errorMessage);
     } finally {
       setIsLoading(false);
@@ -71,33 +58,27 @@ ${dagExplanation}
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '15px 20px',
-        background:
-          'linear-gradient(180deg, rgba(247,250,252,0.95) 0%, rgba(237,242,247,0.98) 100%)',
-        borderTop: '2px solid #cbd5e0',
-        boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.1)',
-        backdropFilter: 'blur(10px)',
-        zIndex: 1000,
-      }}
-    >
-      <Button onClick={handleSubmit} loading={isLoading}>
-        🚀 Submit Pipeline
-      </Button>
+    <div className="workflow-header">
+      <div className="workflow-left">
+        <img src="/pngs/sidebar.png" alt="sidebar icon" className="sidebar-icon" />
+        <span>Projects</span>
+        <span>/</span>
+        <strong>New Project 1</strong>
+        <span>/</span>
+        <span>New Workflow 1</span>
+      </div>
 
-      <style>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
+     
+
+      <div className="workflow-right">
+        <button onClick={handleSubmit}
+          disabled={isLoading}
+          className="run-btn">
+          <span style={{ marginRight: '2px' }}>▶</span>  {/* Triangular icon */}
+          {isLoading ? 'Loading...' : 'Submit'}
+        </button>
+      </div>
+
     </div>
   );
 };

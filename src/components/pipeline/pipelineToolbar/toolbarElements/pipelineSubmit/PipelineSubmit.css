@@ -1,0 +1,54 @@
+.workflow-header {
+
+    padding: 5px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 9px;
+}
+
+.sidebar-icon {
+    width: 10px;
+    height: 10px;
+}
+
+.workflow-left {
+    display: flex;
+    gap: 6px;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.workflow-left strong {
+    color: #111827;
+}
+
+
+.workflow-right {
+    display: flex;
+    align-items: center;
+}
+
+.run-btn {
+    background: #02f85c2a !important;      /* Solid medium green jaise image */
+    color: rgb(46, 143, 39) !important;            /* White text */
+    border: 1px solid #16a34a !important; /* Dark green thin border */
+    padding: 4px 4px !important;      /* Proper spacing */
+    border-radius: 3px !important;      /* Rounded corners */
+    font-weight: 600 !important;        /* Bold text */
+    font-size: 8px !important;         /* Readable size */
+    cursor: pointer !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important; /* Subtle shadow jaise image */
+    transition: all 0.2s ease !important; /* Smooth hover */
+}
+
+.run-btn:hover {
+    background: #00ff5e67 !important;     
+    transform: translateY(-1px) !important;
+}
+
+.run-btn:active {
+    transform: translateY(0) !important;
+}

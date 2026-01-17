@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { BaseNode } from './base/BaseNode';
-
+import { NODE_CONFIG } from '../../config/nodeConfig';
 export const ConditionalNode = ({ id, data }) => {
   const [condition, setCondition] = useState(data?.condition || 'equals');
-
+  const config = data?.config || NODE_CONFIG.conditional; 
   const fields = [
     {
       label: 'Condition',
@@ -24,19 +24,14 @@ export const ConditionalNode = ({ id, data }) => {
   return (
     <BaseNode
       id={id}
-      title="Conditional"
+       title={config.label}
       fields={fields}
-      handles={{
-        inputs: [{ id: 'valueA', top: '25%' }, { id: 'valueB', top: '50%' }],
-        outputs: [{ id: 'true', top: '33%' }, { id: 'false', top: '66%' }],
-      }}
+      handles={config.handles}      // ✅ From config
+      style={config.style}          // ✅ From config
+      description={config.description} // ✅ New prop
       showId={true}
-      style={{ background: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)', height: 120 }}
+       icon={config.icon}    
     >
-      <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '8px', fontSize: '11px', color: '#FFF' }}>
-        <span>✓ True</span>
-        <span>✗ False</span>
-      </div>
     </BaseNode>
   );
 };

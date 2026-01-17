@@ -1,19 +1,20 @@
 import React from 'react';
 import { BaseNode } from './base/BaseNode';
-
+import { NODE_CONFIG } from '../../config/nodeConfig';
 export const LLMNode = ({ id, data }) => {
+    const config = data?.config || NODE_CONFIG.llm; 
   return (
     <BaseNode
       id={id}
-      title="LLM"
-      handles={{
-        inputs: [{ id: 'system', top: '33%' }, { id: 'prompt', top: '66%' }],
-        outputs: [{ id: 'response' }],
-      }}
+       title={config.label}
+      // fields={fields}
+      handles={config.handles}      // ✅ From config
+      style={config.style}          // ✅ From config
+      description={config.description} // ✅ New prop
       showId={true}
-      style={{ background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', height: 100 }}
+        icon={config.icon}
     >
-      <div style={{ fontSize: '11px', textAlign: 'center', marginTop: '8px', color: '#FFF', opacity: 0.9 }}>
+      <div style={{ fontSize: '11px', textAlign: 'center', marginTop: '8px', color: '#000000', opacity: 0.9 }}>
         This is an LLM node
       </div>
     </BaseNode>

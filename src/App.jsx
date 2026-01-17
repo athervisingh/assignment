@@ -1,14 +1,13 @@
-import React from 'react';
-import { PipelineToolbar } from './components/pipeline/PipelineToolbar';
-import { PipelineCanvas } from './components/pipeline/PipelineCanvas';
-import { PipelineSubmit } from './components/pipeline/PipelineSubmit';
+import { PipelineToolbar } from './components/pipeline/pipelineToolbar/PipelineToolbar';
+import { PipelineCanvas } from './components/pipeline/pipelineCanvas/PipelineCanvas';
+// import { PipelineSubmit } from './components/pipeline/PipelineSubmit';
 
 function App() {
   return (
-    <div>
+    <div className='app-wrapper'>
       <PipelineToolbar />
       <PipelineCanvas />
-      <PipelineSubmit />
+      {/* <PipelineSubmit /> */}
     </div>
   );
 }

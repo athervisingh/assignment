@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BaseNode } from './base/BaseNode';
 import { useStore } from '../../store/pipelineStore';
+import { NODE_CONFIG } from '../../config/nodeConfig';
 
 export const TextNode = ({ id, data }) => {
   const [currText, setCurrText] = useState(data?.text || '{{input}}');
   const [variables, setVariables] = useState([]);
-  const [dimensions, setDimensions] = useState({ width: 250, height: 120 });
   const [errors, setErrors] = useState([]);
-
+  
+  const config = data?.config || NODE_CONFIG.text; 
   const nodes = useStore((state) => state.nodes);
   const edges = useStore((state) => state.edges);
   const onConnect = useStore((state) => state.onConnect);
@@ -15,6 +16,20 @@ export const TextNode = ({ id, data }) => {
   const prevConnectedNodesRef = useRef(new Map());
   const isUpdatingFromEdgeRef = useRef(false);
 
+
+  // ✅ NEW: Auto-resize when currText changes (from edges!)
+useEffect(() => {
+  if (textareaRef.current) {
+    const textarea = textareaRef.current;
+    
+    // Reset height
+    textarea.style.height = '32px';
+    
+    // Calculate new height (max 112px = 5 lines)
+    const newHeight = Math.min(textarea.scrollHeight, 112);
+    textarea.style.height = `${newHeight}px`;
+  }
+}, [currText]); // ✅ Runs whenever currText changes!
   // Handle edge-related text updates
   useEffect(() => {
     if (isUpdatingFromEdgeRef.current) {
@@ -80,13 +95,14 @@ export const TextNode = ({ id, data }) => {
 
   // Auto-connect based on variables
   useEffect(() => {
-    const regex = /\{\{\s*(\S+)\s*\}\}/g;
+    // ✅ FIXED REGEX: Matches {{anything}} properly
+    const regex = /\{\{([^}]+)\}\}/g;
     const matches = [];
     let match;
 
     while ((match = regex.exec(currText)) !== null) {
-      const nodeId = match[1].trim();
-      if (!matches.includes(nodeId)) {
+      const nodeId = match[1].trim(); // Extract and trim variable name
+      if (nodeId && !matches.includes(nodeId)) {
         matches.push(nodeId);
       }
     }
@@ -134,43 +150,45 @@ export const TextNode = ({ id, data }) => {
     });
 
     setErrors(newErrors);
-
-    // Auto-resize
-    const lines = currText.split('\n').length;
-    const longestLine = Math.max(
-      ...currText.split('\n').map((line) => line.length),
-      20
-    );
-
-    const newWidth = Math.min(Math.max(250, longestLine * 7 + 40), 500);
-    const newHeight = Math.max(120, lines * 20 + 100);
-
-    setDimensions({ width: newWidth, height: newHeight });
   }, [currText, nodes, edges, id, onConnect]);
+
+  const textareaRef = useRef(null);
+
+  // Auto-resize textarea
+  const handleTextChange = (e) => {
+    const textarea = e.target;
+    setCurrText(textarea.value);
+    
+    // Reset height to recalculate
+    textarea.style.height = '32px';
+    
+    // Calculate new height (max 112px = 5 lines)
+    const newHeight = Math.min(textarea.scrollHeight, 112);
+    textarea.style.height = `${newHeight}px`;
+  };
 
   const fields = [
     {
       label: 'Text',
       type: 'textarea',
       value: currText,
-      onChange: (e) => setCurrText(e.target.value),
-      placeholder: 'Enter text with {{nodeId}}',
-      rows: Math.max(3, currText.split('\n').length),
+      onChange: handleTextChange,
+      placeholder: 'Type {{...}} to utilize variables',
+      rows: 1,
+      ref: textareaRef,
     },
   ];
 
   return (
     <BaseNode
       id={id}
-      title="Text"
+      title={config.label}
       fields={fields}
-      handles={{ inputs: [{ id: 'input' }], outputs: [{ id: 'output' }] }}
+      handles={config.handles}
+      style={config.style}
+      description={config.description}
       showId={true}
-      style={{
-        background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-        width: dimensions.width,
-        minHeight: dimensions.height,
-      }}
+      icon={config.icon}
     >
       {variables.length > 0 && (
         <div
@@ -178,12 +196,13 @@ export const TextNode = ({ id, data }) => {
             fontSize: '10px',
             marginTop: '8px',
             padding: '6px',
-            background: 'rgba(255,255,255,0.2)',
+            background: 'rgba(59, 130, 246, 0.2)',
             borderRadius: '4px',
-            color: '#FFF',
+            color: '#1e40af',
+            border: '1px solid rgba(59, 130, 246, 0.3)',
           }}
         >
-          <strong>Variables:</strong> {variables.join(', ')}
+          <strong>🔗 Variables:</strong> {variables.join(', ')}
         </div>
       )}
       {errors.length > 0 && (
@@ -192,10 +211,10 @@ export const TextNode = ({ id, data }) => {
             fontSize: '10px',
             marginTop: '6px',
             padding: '6px',
-            background: 'rgba(255,0,0,0.3)',
+            background: 'rgba(239, 68, 68, 0.2)',
             borderRadius: '4px',
-            color: '#FFF',
-            border: '1px solid rgba(255,0,0,0.5)',
+            color: '#dc2626',
+            border: '1px solid rgba(239, 68, 68, 0.4)',
           }}
         >
           <strong>⚠️ Not found:</strong> {errors.join(', ')}
